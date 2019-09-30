@@ -6,8 +6,10 @@ const morgan = require('morgan'); // Morgan se utiliza para registrar los detall
 const app = express();
 require('./database')
 
+//archivos staticos
+
 //configuraciones
-app.set('port', 4000);
+app.set('port', process.env.PORT || 4000);
 
 //middleware
 app.use(morgan('dev'));
