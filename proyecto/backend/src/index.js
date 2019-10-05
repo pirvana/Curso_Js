@@ -3,6 +3,8 @@ const express = require('express'); //framwork de JavaScript
 const morgan = require('morgan'); // Morgan se utiliza para registrar los detalles de la solicitudMorgan se utiliza para registrar los detalles de la solicitud
 const path = require('path');
 const SocketIo = require('socket.io');
+const cors = require('cors')
+const axios = require('axios')
 
 //inicializaciones
 const app = express();
@@ -18,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //middleware
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cors());
 
 //routers
 app.use('/api/productos', require('./routes/productos.routes')); //esto es nuestro end point de tareas
@@ -31,6 +34,13 @@ const server = app.listen(app.get('port'), () => {
 const io = SocketIo(server);
 
 
-io.on('connect', () => {
-    console.log('Alguien conectandose');
+io.on('connection', (socket) => {
+    socket.on('fetchProductos', async () =>{
+        try {
+            const res = await axios.get('http://localhost:4000/api/productos')
+            await socket.emit('Productos', res.data)
+        } catch (error) {
+            console.log('Error')
+        }
+    });
 });
