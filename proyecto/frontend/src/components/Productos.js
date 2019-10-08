@@ -48,7 +48,7 @@ class Productos extends Component {
         }
         try {
             if (this.state.editing) {
-                const res = await this.state.axios.put('/api/productos' + this.state._id, producto)
+                const res = await this.state.axios.put('/api/productos/' + this.state._id, producto)
                 if (res.data.success) {
                     NotificationManager.success(res.data.message, 'Producto')
                     this.setState({
@@ -79,7 +79,7 @@ class Productos extends Component {
                 }
             }
         } catch (error) {
-            NotificationManager.error('Ocurrio un error')
+            NotificationManager.error('Ocurrio un error al editar')
         }
     }
 
@@ -95,15 +95,19 @@ class Productos extends Component {
             })
 
         } catch (error) {
-            console.log('error')
+            console.log('error al editar')
         }
     }
 
     async deleteProducto(id) {
         try {
-
+            const res = await this.state.axios.delete('/api/productos/' + id)
+            if (res.data.success) {
+                NotificationManager.success(res.data.message, 'Producto')
+                this.fetchProductos()
+            }
         } catch (error) {
-            console.log('error')
+            console.log('error al eliminar')
         }
     }
 

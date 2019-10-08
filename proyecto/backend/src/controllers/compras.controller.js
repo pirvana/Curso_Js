@@ -45,7 +45,7 @@ module.exports = {
         if (!cantidad) {
             return res.json({
                 success: false,
-                message: 'debe agregar una cantidad'
+                message: 'debe agregar una cantidad a comprar'
             });
         }
         try {

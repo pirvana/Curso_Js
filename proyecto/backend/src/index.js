@@ -43,4 +43,12 @@ io.on('connection', (socket) => {
             console.log('Error')
         }
     });
+    socket.on('fetchCompras', async () =>{
+        try {
+            const res = await axios.get('http://localhost:4000/api/compras')
+            await socket.emit('Compras', res.data)
+        } catch (error) {
+            console.log('Error')
+        }
+    });
 });
